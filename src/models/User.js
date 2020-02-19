@@ -62,9 +62,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
   try {
     const user = await User.findOne({ email });
     if (!user) throw new Error();
-    console.log(password);
     const passwordMatch = await bcrypt.compare(password, user.password);
-    console.log(passwordMatch);
     if (!passwordMatch) throw new Error();
     return user;
   } catch (e) {
@@ -83,7 +81,6 @@ userSchema.methods.generateAuthToken = async function() {
 userSchema.methods.toJSON = function() {
   const user = this;
   const userObject = user.toObject();
-  delete userObject._id;
   delete userObject.password;
   delete userObject.tokens;
   delete userObject.__v;
